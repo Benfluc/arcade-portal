@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <title>Neon Drift — build de demonstração</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+      html, body { height: 100%; overflow: hidden; background: #06060a; }
+      body {
+        display: grid; place-items: center;
+        font-family: ui-sans-serif, system-ui, sans-serif; color: #f2f2f7;
+        touch-action: none; user-select: none;
+      }
+      canvas { display: block; width: 100%; height: 100%; }
+      #hud {
+        position: fixed; top: 14px; left: 50%; transform: translateX(-50%);
+        font: 500 13px ui-monospace, monospace; letter-spacing: .18em;
+        color: #a78bfa; text-transform: uppercase; pointer-events: none;
+      }
+      #note {
+        position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%);
+        font-size: 11px; color: #6c6c80; text-align: center; pointer-events: none;
+        padding: 0 16px;
+      }
+      #overlay {
+        position: fixed; inset: 0; display: grid; place-items: center; text-align: center;
+        background: rgba(6, 6, 10, .82); padding: 24px; cursor: pointer;
+      }
+      #overlay h1 { font-size: 26px; font-weight: 700; letter-spacing: -.02em; }
+      #overlay p { margin-top: 10px; font-size: 14px; color: #a3a3b5; max-width: 30ch; }
+      #overlay span {
+        display: inline-block; margin-top: 22px; padding: 11px 22px; border-radius: 9px;
+        background: linear-gradient(90deg, #8b5cf6, #5b21b6); font-size: 14px; font-weight: 600;
+      }
+      .hidden { display: none !important; }
+    </style>
+  </head>
+  <body>
+    <canvas id="game"></canvas>
+    <div id="hud">Pontos <b id="score">0</b> · Recorde <b id="best">0</b></div>
+    <div id="note">Build de demonstração — substitua por sua exportação do Godot.</div>
+
+    <div id="overlay">
+      <div>
+        <h1>NEON DRIFT</h1>
+        <p id="subtitle">Desvie dos blocos. Setas, A/D ou toque nas laterais da tela.</p>
+        <span>Começar</span>
+      </div>
+    </div>
+
+    <script>
+      /* ------------------------------------------------------------------
+         Jogo de demonstração — existe só para você testar o portal
+         de ponta a ponta antes de colocar a build real do Godot aqui.
+         Apague esta pasta inteira quando exportar o seu jogo.
+      ------------------------------------------------------------------ */
+      const canvas = document.getElementById('game');
+      const ctx = canvas.getContext('2d');
+      const overlay = document.getElementById('overlay');
+      const subtitle = document.getElementById('subtitle');
+      const scoreEl = document.getElementById('score');
+      const bestEl = document.getElementById('best');
+
+      let W = 0, H = 0, dpr = 1;
+      function resize() {
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        W = window.innerWidth; H = window.innerHeight;
+        canvas.width = W * dpr; canvas.height = H * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+      resize();
+      addEventListener('resize', resize);
+
+      const keys = new Set();
+      addEventListener('keydown', (e) => {
+        if (['ArrowLeft','ArrowRight','ArrowUp','ArrowDown',' '].includes(e.key)) e.preventDefault();
+        keys.add(e.key.toLowerCase());
+      });
+      addEventListener('keyup', (e) => keys.delete(e.key.toLowerCase()));
+
+      let touchDir = 0;
+      function onTouch(e) {
+        if (!e.touches.length) { touchDir = 0; return; }
+        touchDir = e.touches[0].clientX < W / 2 ? -1 : 1;
+      }
+      canvas.addEventListener('touchstart', onTouch, { passive: true });
+      canvas.addEventListener('touchmove', onTouch, { passive: true });
+      canvas.addEventListener('touchend', () => { touchDir = 0; }, { passive: true });
+
+      let running = false, player, obstacles, scroll, score, best = 0, speed, spawnTimer;
+
+      try { best = Number(localStorage.getItem('neon-drift-best') || 0); } catch (_) {}
+      bestEl.textContent = best;
+
+      function reset() {
+        player = { x: W / 2, y: H * 0.78, vx: 0, w: 26, h: 42 };
+        obstacles = []; scroll = 0; score = 0; speed = 5.2; spawnTimer = 0;
+        scoreEl.textContent = '0';
+      }
+
+      function start() {
+        reset(); running = true; overlay.classList.add('hidden');
+        canvas.focus();
+      }
+
+      function gameOver() {
+        running = false;
+        if (score > best) {
+          best = score;
+          bestEl.textContent = best;
+          try { localStorage.setItem('neon-drift-best', String(best)); } catch (_) {}
+        }
+        subtitle.textContent = `Você fez ${score} ponto${score === 1 ? '' : 's'}. Tentar de novo?`;
+        overlay.classList.remove('hidden');
+      }
+
+      overlay.addEventListener('click', start);
+      addEventListener('keydown', (e) => {
+        if (!running && (e.key === 'Enter' || e.key === ' ' || e.key.toLowerCase() === 'r')) start();
+      });
+
+      const roadW = () => Math.min(W * 0.8, 460);
+
+      function update(dt) {
+        const left = keys.has('arrowleft') || keys.has('a') || touchDir === -1;
+        const right = keys.has('arrowright') || keys.has('d') || touchDir === 1;
+
+        player.vx += (right ? 0.85 : 0) - (left ? 0.85 : 0);
+        player.vx *= 0.90;
+        player.x += player.vx * dt;
+
+        const half = roadW() / 2;
+        const min = W / 2 - half + player.w / 2;
+        const max = W / 2 + half - player.w / 2;
+        if (player.x < min) { player.x = min; player.vx = 0; }
+        if (player.x > max) { player.x = max; player.vx = 0; }
+
+        speed += 0.0016 * dt;
+        scroll += speed * dt;
+
+        spawnTimer -= dt;
+        if (spawnTimer <= 0) {
+          spawnTimer = Math.max(22, 52 - speed * 2.2);
+          const w = 46 + Math.random() * 70;
+          const x = W / 2 - half + Math.random() * (roadW() - w);
+          obstacles.push({ x, y: -60, w, h: 20 });
+        }
+
+        for (const o of obstacles) o.y += speed * dt;
+
+        for (let i = obstacles.length - 1; i >= 0; i -= 1) {
+          const o = obstacles[i];
+          if (o.y > H + 40) { obstacles.splice(i, 1); score += 1; scoreEl.textContent = score; continue; }
+          const px = player.x - player.w / 2, py = player.y - player.h / 2;
+          if (px < o.x + o.w && px + player.w > o.x && py < o.y + o.h && py + player.h > o.y) {
+            gameOver();
+            return;
+          }
+        }
+      }
+
+      function draw() {
+        ctx.fillStyle = '#06060a';
+        ctx.fillRect(0, 0, W, H);
+
+        const half = roadW() / 2;
+        const lx = W / 2 - half, rx = W / 2 + half;
+
+        const grad = ctx.createLinearGradient(lx, 0, rx, 0);
+        grad.addColorStop(0, 'rgba(139,92,246,.07)');
+        grad.addColorStop(.5, 'rgba(139,92,246,.02)');
+        grad.addColorStop(1, 'rgba(34,211,238,.07)');
+        ctx.fillStyle = grad;
+        ctx.fillRect(lx, 0, roadW(), H);
+
+        ctx.strokeStyle = '#8b5cf6'; ctx.lineWidth = 2; ctx.shadowBlur = 14; ctx.shadowColor = '#8b5cf6';
+        ctx.beginPath(); ctx.moveTo(lx, 0); ctx.lineTo(lx, H); ctx.stroke();
+        ctx.strokeStyle = '#22d3ee'; ctx.shadowColor = '#22d3ee';
+        ctx.beginPath(); ctx.moveTo(rx, 0); ctx.lineTo(rx, H); ctx.stroke();
+        ctx.shadowBlur = 0;
+
+        ctx.strokeStyle = 'rgba(242,242,247,.14)'; ctx.lineWidth = 3;
+        ctx.setLineDash([26, 30]); ctx.lineDashOffset = -scroll;
+        ctx.beginPath(); ctx.moveTo(W / 2, 0); ctx.lineTo(W / 2, H); ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.fillStyle = '#fb7185'; ctx.shadowBlur = 16; ctx.shadowColor = '#fb7185';
+        for (const o of obstacles) {
+          ctx.beginPath(); ctx.roundRect(o.x, o.y, o.w, o.h, 5); ctx.fill();
+        }
+
+        ctx.fillStyle = '#a3e635'; ctx.shadowColor = '#a3e635'; ctx.shadowBlur = 22;
+        ctx.beginPath();
+        ctx.roundRect(player.x - player.w / 2, player.y - player.h / 2, player.w, player.h, 7);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+
+      let last = performance.now();
+      function loop(now) {
+        const dt = Math.min((now - last) / 16.667, 3);
+        last = now;
+        if (running) { update(dt); if (running) draw(); }
+        requestAnimationFrame(loop);
+      }
+
+      reset();
+      draw();
+      requestAnimationFrame(loop);
+    </script>
+  </body>
+</html>
