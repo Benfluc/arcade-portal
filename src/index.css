@@ -1,0 +1,216 @@
+@import 'tailwindcss';
+
+/* ------------------------------------------------------------------
+   Design tokens — identidade "dark indie / tech"
+   Altere as cores aqui e todo o portal acompanha.
+------------------------------------------------------------------ */
+@theme {
+  --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  /* Fundo em camadas */
+  --color-void: #06060a;
+  --color-abyss: #0a0a12;
+  --color-surface: #101019;
+  --color-surface-2: #16161f;
+  --color-edge: #23232f;
+  --color-edge-soft: #1a1a25;
+
+  /* Texto */
+  --color-ink: #f2f2f7;
+  --color-ink-soft: #a3a3b5;
+  --color-ink-dim: #6c6c80;
+
+  /* Acentos */
+  --color-neon: #8b5cf6;
+  --color-neon-soft: #a78bfa;
+  --color-neon-deep: #5b21b6;
+  --color-cyber: #22d3ee;
+  --color-acid: #a3e635;
+  --color-ember: #fb7185;
+
+  --radius-xl2: 1.25rem;
+
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-pulse-slow: pulse-slow 4s ease-in-out infinite;
+  --animate-scan: scan 7s linear infinite;
+  --animate-rise: rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-shake: shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse-slow {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes scan {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100vh);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shake {
+  10%,
+  90% {
+    transform: translateX(-2px);
+  }
+  20%,
+  80% {
+    transform: translateX(4px);
+  }
+  30%,
+  50%,
+  70% {
+    transform: translateX(-6px);
+  }
+  40%,
+  60% {
+    transform: translateX(6px);
+  }
+}
+
+/* ------------------------------------------------------------------
+   Base
+------------------------------------------------------------------ */
+@layer base {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html {
+    color-scheme: dark;
+    scrollbar-gutter: stable;
+  }
+
+  body {
+    @apply bg-void text-ink font-sans antialiased;
+    min-height: 100dvh;
+    overscroll-behavior-y: none;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-neon) 40%, transparent);
+    color: var(--color-ink);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-abyss);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-edge);
+    border-radius: 999px;
+    border: 2px solid var(--color-abyss);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: color-mix(in oklab, var(--color-neon) 50%, var(--color-edge));
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-neon-soft);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Utilitários de identidade
+------------------------------------------------------------------ */
+@utility glass {
+  background: color-mix(in oklab, var(--color-surface) 75%, transparent);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+}
+
+@utility text-glow {
+  text-shadow: 0 0 22px color-mix(in oklab, var(--color-neon) 55%, transparent);
+}
+
+@utility grid-bg {
+  background-image:
+    linear-gradient(to right, color-mix(in oklab, var(--color-edge) 60%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--color-edge) 60%, transparent) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+@utility noise {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+}
+
+/* ------------------------------------------------------------------
+   Enquadramento do jogo dentro do player
+
+   Um jogo em retrato (720×1280) com `stretch/aspect = expand` no Godot
+   estica a área jogável para preencher o que receber. Numa tela de PC
+   16:9 isso vira um viewport larguíssimo e o menu se espalha pelas
+   bordas — o jogo "abre demais".
+
+   A correção é não entregar uma caixa larga para ele: damos ao iframe
+   uma caixa com a proporção do jogo, centralizada, com fundo preto em
+   volta (como um celular no meio da tela).
+
+   Só age quando a tela está na proporção ERRADA para o jogo, então no
+   celular em retrato o jogo continua ocupando tudo, sem tarja.
+------------------------------------------------------------------ */
+@media (orientation: landscape) {
+  .fit-portrait {
+    width: auto;
+    height: 100%;
+    max-width: 100%;
+    aspect-ratio: 9 / 16;
+    margin-inline: auto;
+  }
+}
+
+@media (orientation: portrait) {
+  .fit-landscape {
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+    aspect-ratio: 16 / 9;
+    margin-block: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
