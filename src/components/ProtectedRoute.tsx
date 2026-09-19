@@ -9,7 +9,7 @@ export function ProtectedRoute() {
   if (booting) {
     return (
       <div className="grid min-h-dvh place-items-center">
-        <Loader2 className="size-6 animate-spin text-neon-soft" />
+        <Loader2 className="size-6 animate-spin text-lantern" />
         <span className="sr-only">Carregando</span>
       </div>
     )

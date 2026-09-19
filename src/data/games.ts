@@ -31,19 +31,21 @@ export const games: Game[] = [
   {
     slug: 'light-chase',
     title: 'Light Chase',
-    tagline: 'Fuja do labirinto antes que a lanterna apague.',
+    tagline: 'Sobreviva à escuridão. A luz é a sua maior arma.',
     description:
-      'Um guaxinim com uma lanterna preso em labirintos gerados aleatoriamente. A lanterna é a barra de vida: conforme a carga cai, a escuridão fecha e a área jogável encolhe. Sombras perseguem você pelo labirinto, o pulso de luz as atordoa por alguns segundos, e baterias espalhadas pelo mapa devolvem fôlego. Achar a chave e alcançar a porta de saída encerra a fase.',
+      'Criaturas estranhas espreitam nas sombras, e a sua lanterna é a única coisa entre você e elas. Explore ambientes escuros, descubra o perigo em cada esquina e use a luz para revidar contra as criaturas que caçam você. Um jogo de ação acelerado, feito para o celular. Até quando você aguenta com a escuridão te caçando?',
     url: '/games/light-chase/index.html',
-    // Imagens — coloque os arquivos em public/games/light-chase/ e descomente.
-       //cover.png  1280×720  (16:9) → card da biblioteca + topo no celular
-       //hero.png   1920×600  (16:5) → topo da página do jogo no PC
-       cover: '/games/light-chase/cover.png',
-       hero: '/games/light-chase/hero.png',
-    status: 'alpha',
-    version: '0.1.0',
-    tags: ['labirinto', 'sobrevivência', 'arcade', 'mobile'],
-    updatedAt: '2026-09-14',
+    cover: '/games/light-chase/cover.png',
+    hero: '/games/light-chase/hero.png',
+    tags: ['ação', 'sobrevivência', 'mobile'],
+    features: [
+      'Enfrente criaturas das sombras usando a sua lanterna',
+      'Explore ambientes escuros e misteriosos',
+      'Ação acelerada, pensada para o celular',
+      'Controles simples, fáceis de aprender',
+      'Visual atmosférico e trilha sonora inquietante',
+      'Sobreviva o máximo que conseguir contra inimigos cada vez mais perigosos',
+    ],
     mobileSupport: true,
     orientation: 'retrato',
     controls: [
@@ -51,30 +53,26 @@ export const games: Game[] = [
       { label: 'Pulso de luz', keys: 'Toque curto · Espaço' },
       { label: 'Esquiva', keys: 'Deslizar rápido · Shift' },
     ],
-    playtestNotes: [
-      'A lanterna acaba rápido demais ou devagar demais?',
-      'Dá para perceber que o pulso de luz atordoa as sombras, ou isso passou batido?',
-      'No celular, o joystick de arrastar respondeu bem?',
-      'Em algum momento você ficou perdido sem saber para onde ir?',
-    ],
   },
 
   {
     slug: 'dungeon-defender',
     title: 'You Must Defend the Princess',
-    tagline: 'Tower defense com herói controlável.',
+    tagline: 'A princesa está sob ataque. Você é a última linha de defesa.',
     description:
-      'Defenda a princesa na base do mapa. Entre as waves você constrói e posiciona defesas com o ouro disponível; durante o ataque, controla o herói diretamente para tapar os buracos. Nenhum inimigo voa nem ataca à distância — todos precisam alcançar a princesa fisicamente, então o que decide a partida é o traçado do caminho e onde você gasta o ouro.',
+      'Construa suas defesas, enfrente ondas de inimigos perigosos e proteja a princesa a qualquer custo. De goblins e orcs a criaturas mortas-vivas e monstros aterrorizantes, cada onda traz um desafio novo. Quantas ondas você aguenta? A princesa está contando com você.',
     url: '/games/dungeon-defender/index.html',
-    // Imagens — coloque os arquivos em public/games/dungeon-defender/ e descomente.
-    //   cover.png  1280×720  (16:9) → card da biblioteca + topo no celular
-    //   hero.png   1920×600  (16:5) → topo da página do jogo no PC
     cover: '/games/dungeon-defender/cover.png',
     hero: '/games/dungeon-defender/hero.png',
-    status: 'beta',
-    version: '1.0.0',
-    tags: ['tower defense', 'estratégia', 'singleplayer'],
-    updatedAt: '2026-09-15',
+    tags: ['tower defense', 'estratégia', 'pixel art'],
+    features: [
+      'Defenda a princesa contra ondas de inimigos',
+      'Construa e melhore as suas defesas',
+      'Enfrente tipos diferentes de inimigos, cada um com sua ameaça',
+      'Sobreviva a ondas cada vez mais desafiadoras',
+      'Controles simples, pensados para o celular',
+      'Atmosfera pixel art medieval sombria',
+    ],
     /*
      * ATENÇÃO — por que está como `false`:
      *
@@ -106,12 +104,6 @@ export const games: Game[] = [
       { label: 'Velocidade', keys: 'Tab' },
       { label: 'Pausar', keys: 'P' },
     ],
-    playtestNotes: [
-      'O ouro que você recebe entre as waves parece justo para o tamanho da ameaça?',
-      'Em algum momento uma wave pareceu impossível em vez de difícil?',
-      'Controlar o herói ajuda de verdade, ou dá para vencer só construindo?',
-      'A contagem regressiva entre waves dá tempo de construir com calma?',
-    ],
   },
 ]
 
@@ -122,26 +114,4 @@ export function visibleGames(): Game[] {
 
 export function findGame(slug: string): Game | undefined {
   return games.find((game) => game.slug === slug && !game.hidden)
-}
-
-export const statusMeta: Record<
-  Game['status'],
-  { label: string; className: string }
-> = {
-  prototipo: {
-    label: 'Protótipo',
-    className: 'bg-ember/12 text-ember ring-ember/30',
-  },
-  alpha: {
-    label: 'Alpha',
-    className: 'bg-cyber/12 text-cyber ring-cyber/30',
-  },
-  beta: {
-    label: 'Beta',
-    className: 'bg-neon/15 text-neon-soft ring-neon/35',
-  },
-  release: {
-    label: 'Lançado',
-    className: 'bg-acid/12 text-acid ring-acid/30',
-  },
 }

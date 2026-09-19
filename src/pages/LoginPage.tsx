@@ -23,7 +23,7 @@ export function LoginPage() {
 
   if (session) {
     const from = (location.state as { from?: string } | null)?.from
-    return <Navigate to={from ?? '/biblioteca'} replace />
+    return <Navigate to={from ?? '/jogos'} replace />
   }
 
   async function handleSubmit(event: FormEvent) {
@@ -37,7 +37,7 @@ export function LoginPage() {
 
     if (result.ok) {
       const from = (location.state as { from?: string } | null)?.from
-      navigate(from ?? '/biblioteca', { replace: true })
+      navigate(from ?? '/jogos', { replace: true })
       return
     }
 
@@ -57,11 +57,11 @@ export function LoginPage() {
         <div className="glass rounded-xl2 border border-edge p-6 shadow-2xl shadow-black/50 sm:p-8">
           <div className="mb-6 flex items-center gap-3">
             <span className="grid size-10 shrink-0 place-items-center rounded-lg border border-edge bg-surface-2">
-              <LockKeyhole className="size-4.5 text-neon-soft" />
+              <LockKeyhole className="size-4.5 text-lantern" />
             </span>
             <div>
-              <h1 className="font-display text-base font-semibold text-ink">Área restrita</h1>
-              <p className="text-xs text-ink-dim">Informe sua chave de acesso para continuar.</p>
+              <h1 className="font-display text-base font-semibold text-ink">Entrar</h1>
+              <p className="text-xs text-ink-dim">Informe sua chave de acesso para ver os jogos.</p>
             </div>
           </div>
 
@@ -92,7 +92,7 @@ export function LoginPage() {
                 className={`w-full rounded-lg border bg-abyss/80 py-3.5 pr-4 pl-11 font-mono text-sm tracking-widest text-ink uppercase transition-colors outline-none placeholder:tracking-normal placeholder:text-ink-dim/60 disabled:opacity-60 ${
                   error
                     ? 'border-ember/60 focus:border-ember'
-                    : 'border-edge focus:border-neon/60 focus:ring-2 focus:ring-neon/20'
+                    : 'border-edge focus:border-ink/50 focus:ring-2 focus:ring-ink/15'
                 }`}
               />
             </div>
@@ -113,7 +113,7 @@ export function LoginPage() {
                 type="checkbox"
                 checked={remember}
                 onChange={(event) => setRemember(event.target.checked)}
-                className="size-4 shrink-0 cursor-pointer appearance-none rounded border border-edge bg-abyss checked:border-neon checked:bg-neon"
+                className="size-4 shrink-0 cursor-pointer appearance-none rounded border border-edge bg-abyss checked:border-ink checked:bg-ink"
                 style={{
                   backgroundImage: remember
                     ? "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.5 8.5l3 3 6-6'/%3E%3C/svg%3E\")"
@@ -126,7 +126,7 @@ export function LoginPage() {
             <button
               type="submit"
               disabled={submitting || !value.trim()}
-              className="group mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-neon to-neon-deep px-4 py-3.5 text-sm font-semibold text-white shadow-lg shadow-neon/25 transition-all hover:shadow-neon/40 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-45 disabled:shadow-none"
+              className="group mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-ink px-4 py-3.5 text-sm font-semibold text-void shadow-lg shadow-black/40 transition-all hover:bg-white active:scale-[0.99] disabled:cursor-not-allowed disabled:bg-surface-2 disabled:text-ink-dim disabled:shadow-none"
             >
               {submitting ? (
                 <>
@@ -135,7 +135,7 @@ export function LoginPage() {
                 </>
               ) : (
                 <>
-                  Entrar no portal
+                  Entrar
                   <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
                 </>
               )}
@@ -149,7 +149,7 @@ export function LoginPage() {
                 href={site.contactUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="font-medium text-neon-soft underline-offset-2 hover:underline"
+                className="font-medium text-ink underline-offset-2 hover:underline"
               >
                 {site.contactLabel}
               </a>
@@ -158,7 +158,7 @@ export function LoginPage() {
         </div>
 
         <p className="mt-6 text-center font-mono text-[10px] tracking-widest text-ink-dim/70 uppercase">
-          Acesso restrito · Builds em desenvolvimento
+          Acesso restrito
         </p>
       </div>
     </main>

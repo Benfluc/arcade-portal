@@ -8,33 +8,40 @@
   --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  /* Tipografia da marca — mesma família pixelada da vinheta de abertura. */
+  --font-pixel: 'Silkscreen', 'Space Grotesk', ui-sans-serif, sans-serif;
 
-  /* Fundo em camadas */
-  --color-void: #06060a;
-  --color-abyss: #0a0a12;
-  --color-surface: #101019;
-  --color-surface-2: #16161f;
-  --color-edge: #23232f;
-  --color-edge-soft: #1a1a25;
+  /* Fundo em camadas — carvão, como o fundo do logo */
+  --color-void: #08090c;
+  --color-abyss: #0d0f13;
+  --color-surface: #14171d;
+  --color-surface-2: #1b1f26;
+  --color-edge: #2a2f38;
+  --color-edge-soft: #1e232b;
 
   /* Texto */
-  --color-ink: #f2f2f7;
-  --color-ink-soft: #a3a3b5;
-  --color-ink-dim: #6c6c80;
+  --color-ink: #f4f5f7;
+  --color-ink-soft: #a6acb7;
+  --color-ink-dim: #6d7480;
 
-  /* Acentos */
-  --color-neon: #8b5cf6;
-  --color-neon-soft: #a78bfa;
-  --color-neon-deep: #5b21b6;
-  --color-cyber: #22d3ee;
-  --color-acid: #a3e635;
-  --color-ember: #fb7185;
+  /*
+   * Acentos.
+   *
+   * A marca é monocromática: guaxinim branco sobre carvão. Então o branco
+   * é o acento principal — botões de ação são brancos com texto escuro.
+   * O âmbar entra só em detalhes pequenos, puxando o facho de lanterna do
+   * Light Chase; é a única cor do site e dá para trocar só aqui.
+   */
+  --color-lantern: #e8a33d;
+  --color-lantern-soft: #f2c072;
+  --color-ember: #e8705c;
+  --color-moss: #86c06a;
 
   --radius-xl2: 1.25rem;
 
   --animate-float: float 6s ease-in-out infinite;
-  --animate-pulse-slow: pulse-slow 4s ease-in-out infinite;
-  --animate-scan: scan 7s linear infinite;
+  --animate-pulse-slow: pulse-slow 5s ease-in-out infinite;
+  --animate-scan: scan 9s linear infinite;
   --animate-rise: rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
   --animate-shake: shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
@@ -119,7 +126,7 @@
   }
 
   ::selection {
-    background: color-mix(in oklab, var(--color-neon) 40%, transparent);
+    background: color-mix(in oklab, var(--color-ink) 28%, transparent);
     color: var(--color-ink);
   }
 
@@ -136,11 +143,11 @@
     border: 2px solid var(--color-abyss);
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: color-mix(in oklab, var(--color-neon) 50%, var(--color-edge));
+    background: color-mix(in oklab, var(--color-ink) 35%, var(--color-edge));
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-neon-soft);
+    outline: 2px solid var(--color-ink);
     outline-offset: 2px;
     border-radius: 4px;
   }
@@ -156,7 +163,7 @@
 }
 
 @utility text-glow {
-  text-shadow: 0 0 22px color-mix(in oklab, var(--color-neon) 55%, transparent);
+  text-shadow: 0 0 24px color-mix(in oklab, var(--color-ink) 45%, transparent);
 }
 
 @utility grid-bg {

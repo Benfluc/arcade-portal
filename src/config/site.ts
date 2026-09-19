@@ -1,13 +1,13 @@
 /**
- * Identidade do portal. Altere livremente.
+ * Identidade do site. Altere livremente.
  */
 export const site = {
-  name: 'NOVA ARCADE',
-  /** Aparece abaixo do nome na tela de login. */
-  tagline: 'Portal privado de playtest',
+  name: 'John Du Games',
+  /** Aparece abaixo do nome na tela de entrada. */
+  tagline: 'Jogos indie para jogar no navegador',
   /** Texto do rodapé. */
-  studio: 'Estúdio independente',
-  /** Onde o testador pede uma chave / fala com você. Deixe '' para esconder. */
+  studio: 'Estúdio independente de jogos',
+  /** Onde a pessoa fala com você. Deixe '' para esconder. */
   contactUrl: '',
-  contactLabel: 'Solicitar acesso',
+  contactLabel: 'Pedir uma chave',
 } as const

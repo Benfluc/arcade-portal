@@ -103,7 +103,7 @@ export function GamePlayer({ game, onClose }: { game: Game; onClose: () => void 
       {loading && (
         <div className="absolute inset-0 grid place-items-center bg-abyss px-6 text-center">
           <div>
-            <Loader2 className="mx-auto size-8 animate-spin text-neon-soft" />
+            <Loader2 className="mx-auto size-8 animate-spin text-lantern" />
             <p className="mt-5 font-display text-lg font-semibold text-ink">{game.title}</p>
             <p className="mt-1.5 text-sm text-ink-soft">
               Carregando a build… a primeira vez costuma demorar mais.
@@ -123,7 +123,7 @@ export function GamePlayer({ game, onClose }: { game: Game; onClose: () => void 
                   <button
                     type="button"
                     onClick={reload}
-                    className="rounded-md bg-neon px-3 py-1.5 text-xs font-semibold text-white transition-opacity hover:opacity-90"
+                    className="rounded-md bg-ink px-3 py-1.5 text-xs font-semibold text-void transition-colors hover:bg-white"
                   >
                     Recarregar
                   </button>
@@ -145,7 +145,7 @@ export function GamePlayer({ game, onClose }: { game: Game; onClose: () => void 
       {askRotate && !loading && (
         <div className="absolute inset-0 z-10 grid place-items-center bg-abyss/95 px-8 text-center backdrop-blur-sm">
           <div>
-            <RotateCw className="animate-float mx-auto size-10 text-neon-soft" />
+            <RotateCw className="animate-float mx-auto size-10 text-lantern" />
             <p className="mt-5 font-display text-lg font-semibold text-ink">Gire o celular</p>
             <p className="mt-2 max-w-xs text-sm text-ink-soft">
               {game.title} foi feito para a tela na horizontal.

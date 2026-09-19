@@ -14,7 +14,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route element={<ProtectedRoute />}>
-            <Route path="/biblioteca" element={<LibraryPage />} />
+            <Route path="/jogos" element={<LibraryPage />} />
             <Route path="/jogo/:slug" element={<GamePage />} />
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />

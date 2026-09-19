@@ -9,14 +9,14 @@ export function Header() {
   return (
     <header className="glass sticky top-0 z-40 border-b border-edge/70">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
-        <Link to="/biblioteca" className="shrink-0 transition-opacity hover:opacity-80">
+        <Link to="/jogos" className="shrink-0 transition-opacity hover:opacity-80">
           <Logo />
         </Link>
 
         {session && (
           <div className="flex items-center gap-2 sm:gap-3">
             <span className="hidden items-center gap-2 rounded-full border border-edge bg-surface/60 px-3 py-1.5 text-xs text-ink-soft sm:flex">
-              <ShieldCheck className="size-3.5 text-acid" />
+              <ShieldCheck className="size-3.5 text-lantern" />
               <span className="max-w-[16ch] truncate font-medium text-ink">{session.label}</span>
             </span>
 

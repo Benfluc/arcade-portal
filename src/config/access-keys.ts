@@ -53,7 +53,7 @@ export const accessKeys: AccessKey[] = [
   },
   {
     key: 'PLAYTEST-ALPHA',
-    label: 'Grupo de playtest — Alpha',
+    label: 'Convidados',
     games: '*',
     expiresAt: '2027-12-31',
   },

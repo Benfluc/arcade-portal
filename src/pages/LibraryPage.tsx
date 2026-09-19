@@ -6,13 +6,14 @@ import { useAuth } from '../hooks/useAuth'
 import { GameCard } from '../components/GameCard'
 import { Header } from '../components/layout/Header'
 import { Footer } from '../components/layout/Footer'
+import { site } from '../config/site'
 
 export function LibraryPage() {
   const { session } = useAuth()
   const [query, setQuery] = useState('')
   const [activeTag, setActiveTag] = useState<string | null>(null)
 
-  /** Só os jogos que a chave do testador libera. */
+  /** Só os jogos que a chave liberou. */
   const allowed = useMemo(() => {
     if (!session) return []
     return visibleGames().filter((game) => keyAllowsGame(session, game.slug))
@@ -45,16 +46,16 @@ export function LibraryPage() {
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-10 sm:px-6 sm:py-14">
         {/* Cabeçalho da página */}
         <div className="animate-rise">
-          <p className="font-mono text-[11px] tracking-[0.2em] text-neon-soft uppercase">
-            Biblioteca de playtest
+          <p className="font-pixel text-[10px] tracking-[0.18em] text-ink-dim uppercase">
+            {site.name}
           </p>
           <h1 className="mt-3 font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl">
-            Jogos disponíveis
+            Nossos jogos
           </h1>
           <p className="mt-3 max-w-xl text-sm leading-relaxed text-ink-soft">
             {allowed.length === 0
               ? 'Nenhum jogo liberado para esta chave no momento.'
-              : `${allowed.length} ${allowed.length === 1 ? 'build disponível' : 'builds disponíveis'} para você. Clique em um jogo para abrir direto no navegador — sem instalar nada.`}
+              : 'Todos rodam direto no navegador, no computador ou no celular. Sem instalar nada — é só escolher e jogar.'}
           </p>
         </div>
 
@@ -69,7 +70,7 @@ export function LibraryPage() {
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder="Buscar jogo…"
                 aria-label="Buscar jogo"
-                className="w-full rounded-lg border border-edge bg-surface/50 py-2.5 pr-3 pl-10 text-sm text-ink transition-colors outline-none placeholder:text-ink-dim/70 focus:border-neon/50 focus:ring-2 focus:ring-neon/15"
+                className="w-full rounded-lg border border-edge bg-surface/50 py-2.5 pr-3 pl-10 text-sm text-ink transition-colors outline-none placeholder:text-ink-dim/70 focus:border-ink/45 focus:ring-2 focus:ring-ink/12"
               />
             </div>
 
@@ -87,7 +88,7 @@ export function LibraryPage() {
                       onClick={() => setActiveTag(active ? null : tag)}
                       className={`shrink-0 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
                         active
-                          ? 'border-neon/55 bg-neon/15 text-neon-soft'
+                          ? 'border-ink/45 bg-ink/10 text-ink'
                           : 'border-edge bg-surface/40 text-ink-soft hover:border-edge hover:text-ink'
                       }`}
                     >
@@ -133,18 +134,18 @@ function EmptyState({ filtering, onClear }: { filtering: boolean; onClear: () =>
         <Icon className="size-6 text-ink-dim" />
       </span>
       <h2 className="mt-5 font-display text-lg font-semibold text-ink">
-        {filtering ? 'Nenhum resultado' : 'Biblioteca vazia'}
+        {filtering ? 'Nenhum resultado' : 'Nada por aqui ainda'}
       </h2>
       <p className="mt-2 max-w-sm text-sm text-ink-soft">
         {filtering
           ? 'Nenhum jogo corresponde a esses filtros.'
-          : 'Ainda não há builds liberadas para esta chave de acesso. Fale com o desenvolvedor.'}
+          : 'Esta chave de acesso ainda não tem nenhum jogo liberado.'}
       </p>
       {filtering && (
         <button
           type="button"
           onClick={onClear}
-          className="mt-5 rounded-lg border border-edge bg-surface px-4 py-2 text-sm font-medium text-ink transition-colors hover:border-neon/50 hover:text-neon-soft"
+          className="mt-5 rounded-lg border border-edge bg-surface px-4 py-2 text-sm font-medium text-ink transition-colors hover:border-ink/30"
         >
           Limpar filtros
         </button>
