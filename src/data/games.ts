@@ -24,10 +24,52 @@ import type { Game } from '../types/game'
  *     `/games/<slug>/index.html`.
  *
  *  O `slug` também é o endereço da página: /jogo/light-chase
+ *
+ *  ATENÇÃO ao nome do arquivo: o Godot nomeia a exportação a partir
+ *  do Export Path, então uma build salva como `VortexWing.html` NÃO
+ *  responde em `/games/<slug>/index.html`. Ou você exporta com o nome
+ *  `index.html`, ou aponta o campo `url` para o nome real do arquivo.
+ *  É o erro mais fácil de cometer aqui — o jogo some do site sem dar
+ *  nenhum aviso.
  * ============================================================
  */
 
 export const games: Game[] = [
+  {
+    slug: 'vortexwing',
+    title: 'VortexWing',
+    tagline: 'Monte a nave, aguente dois minutos, volte e conserte o que sobrou.',
+    description:
+      'Um roguelite de construção de naves. No hangar você monta a sua nave bloco a bloco numa grade livre — casco, motores, armas, geradores — e leva ela para uma arena de dois minutos contra naves geradas na hora. O combate é visto de cima e tem inércia de verdade: a nave continua andando depois que você solta o acelerador, e cada peça que você prega muda o peso e o jeito de girar. O que você ganha em combate paga as peças da próxima montagem.',
+    // O arquivo exportado se chama VortexWing.html, não index.html.
+    url: '/games/vortexwing/VortexWing.html',
+    cover: '/games/vortexwing/cover.png',
+    hero: '/games/vortexwing/hero.png',
+    badge: 'Novo',
+    tags: ['naves', 'roguelite', 'construção'],
+    features: [
+      'Monte a sua nave bloco a bloco numa grade livre',
+      'Combate visto de cima com inércia — peso e formato mudam o pilotar',
+      'Arenas de dois minutos contra naves geradas na hora',
+      'Cada vitória paga peças novas para a próxima montagem',
+      'Progressão roguelite: você melhora a nave até conseguir vencer',
+      'Campos de detritos e o espaço aberto como cenário',
+    ],
+    // Sem suporte a toque: a arena lê teclado e mouse direto
+    // (Input.is_physical_key_pressed / is_mouse_button_pressed),
+    // não há tratamento de InputEventScreenTouch em lugar nenhum.
+    mobileSupport: false,
+    orientation: 'paisagem',
+    controls: [
+      { label: 'Girar', keys: 'A D · ← →' },
+      { label: 'Acelerar', keys: 'W · ↑' },
+      { label: 'Ré / frear', keys: 'S · ↓' },
+      { label: 'Apontar para o cursor', keys: 'Botão direito' },
+      { label: 'Atirar', keys: 'Espaço · botão esquerdo' },
+      { label: 'Voltar / pausar', keys: 'Esc' },
+    ],
+  },
+
   {
     slug: 'feather-and-fire',
     title: 'Feather & Fire',
