@@ -59,6 +59,27 @@ export function GamePlayer({ game, onClose }: { game: Game; onClose: () => void 
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [onClose])
 
+  /*
+   * Saída pedida pelo próprio jogo.
+   *
+   * Um jogo rodando no iframe não consegue fechar a aba nem alcançar o Esc
+   * desta página — o teclado fica preso dentro do frame. Quem tiver um botão
+   * "Sair" no próprio menu pode avisar o portal com:
+   *
+   *     parent.postMessage({ type: 'game:exit' }, '*')
+   *
+   * Aceitamos a mensagem apenas se vier do nosso próprio iframe.
+   */
+  useEffect(() => {
+    const onMessage = (event: MessageEvent) => {
+      if (event.source !== frameRef.current?.contentWindow) return
+      const data = event.data as { type?: string } | null
+      if (data && data.type === 'game:exit') onClose()
+    }
+    window.addEventListener('message', onMessage)
+    return () => window.removeEventListener('message', onMessage)
+  }, [onClose])
+
   // Aviso de carregamento demorado.
   useEffect(() => {
     if (!loading) return

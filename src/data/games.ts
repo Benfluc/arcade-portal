@@ -29,6 +29,36 @@ import type { Game } from '../types/game'
 
 export const games: Game[] = [
   {
+    slug: 'feather-and-fire',
+    title: 'Feather & Fire',
+    tagline: 'Um corvo, um dragão adormecido e dez câmaras de ouro.',
+    description:
+      'O dragão dorme sobre o tesouro, e o olho dele é uma lanterna. Enquanto ele ronca, a câmara é sua; quando levanta a cabeça, tudo que a luz alcança vira cinza. As rochas projetam sombra de verdade — calculada a partir do olho dele — então cada abrigo tem um alcance exato, e agachar é a diferença entre caber na sombra e virar tocha. Dez câmaras, sono cada vez mais curto, nenhum aviso na tela. Só tentativa, erro e sangue-frio.',
+    url: '/games/feather-and-fire/index.html',
+    cover: '/games/feather-and-fire/cover.png',
+    hero: '/games/feather-and-fire/hero.png',
+    badge: 'Novo',
+    tags: ['furtividade', 'pixel art', 'puzzle'],
+    features: [
+      'Sombras calculadas em tempo real a partir do olho do dragão',
+      'Dez câmaras com sono cada vez mais curto',
+      'Agache para caber nas sombras rasas',
+      'Ruído acorda o dragão: correr e pisar em ossos cobram caro',
+      'Nenhum medidor na tela — você aprende a câmara errando',
+      'Três estrelas por câmara: concluir, todo o ouro e bater o tempo-par',
+    ],
+    mobileSupport: true,
+    orientation: 'paisagem',
+    controls: [
+      { label: 'Andar', keys: '← → · botões na tela' },
+      { label: 'Correr', keys: 'Shift · CORRER' },
+      { label: 'Agachar', keys: '↓ · AGACHAR' },
+      { label: 'Pausar', keys: 'P' },
+      { label: 'Reiniciar a câmara', keys: 'R' },
+    ],
+  },
+
+  {
     slug: 'light-chase',
     title: 'Light Chase',
     tagline: 'Sobreviva à escuridão. A luz é a sua maior arma.',
