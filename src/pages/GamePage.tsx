@@ -12,8 +12,6 @@ import {
   Tag,
 } from 'lucide-react'
 import { findGame } from '../data/games'
-import { keyAllowsGame } from '../lib/auth'
-import { useAuth } from '../hooks/useAuth'
 import { useDevice } from '../hooks/useDevice'
 import { fallbackCover } from '../lib/format'
 import { GamePlayer } from '../components/GamePlayer'
@@ -22,7 +20,6 @@ import { Footer } from '../components/layout/Footer'
 
 export function GamePage() {
   const { slug = '' } = useParams()
-  const { session } = useAuth()
   const { isTouch } = useDevice()
 
   const [playing, setPlaying] = useState(false)
@@ -30,9 +27,9 @@ export function GamePage() {
 
   const game = findGame(slug)
 
-  // Jogo inexistente ou fora do escopo desta chave → volta para o início.
-  if (!game || !session || !keyAllowsGame(session, game.slug)) {
-    return <Navigate to="/jogos" replace />
+  // Jogo inexistente ou oculto → volta para a lista.
+  if (!game) {
+    return <Navigate to="/" replace />
   }
 
   const showImage = Boolean(game.cover) && !coverFailed
@@ -48,7 +45,7 @@ export function GamePage() {
 
       <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8 sm:px-6 sm:py-12">
         <Link
-          to="/jogos"
+          to="/"
           className="inline-flex items-center gap-2 text-sm text-ink-soft transition-colors hover:text-ink"
         >
           <ArrowLeft className="size-4" />

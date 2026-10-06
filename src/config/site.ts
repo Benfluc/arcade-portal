@@ -3,11 +3,11 @@
  */
 export const site = {
   name: 'John Du Games',
-  /** Aparece abaixo do nome na tela de entrada. */
+  /** Frase curta da marca. */
   tagline: 'Jogos indie para jogar no navegador',
   /** Texto do rodapé. */
   studio: 'Estúdio independente de jogos',
   /** Onde a pessoa fala com você. Deixe '' para esconder. */
   contactUrl: '',
-  contactLabel: 'Pedir uma chave',
+  contactLabel: 'Falar com o estúdio',
 } as const

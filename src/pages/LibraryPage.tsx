@@ -1,23 +1,17 @@
 import { useMemo, useState } from 'react'
 import { Gamepad2, Search, SearchX, X } from 'lucide-react'
 import { visibleGames } from '../data/games'
-import { keyAllowsGame } from '../lib/auth'
-import { useAuth } from '../hooks/useAuth'
 import { GameCard } from '../components/GameCard'
 import { Header } from '../components/layout/Header'
 import { Footer } from '../components/layout/Footer'
 import { site } from '../config/site'
 
 export function LibraryPage() {
-  const { session } = useAuth()
   const [query, setQuery] = useState('')
   const [activeTag, setActiveTag] = useState<string | null>(null)
 
-  /** Só os jogos que a chave liberou. */
-  const allowed = useMemo(() => {
-    if (!session) return []
-    return visibleGames().filter((game) => keyAllowsGame(session, game.slug))
-  }, [session])
+  /** Todos os jogos publicados. */
+  const allowed = useMemo(() => visibleGames(), [])
 
   const tags = useMemo(
     () => [...new Set(allowed.flatMap((game) => game.tags))].sort((a, b) => a.localeCompare(b, 'pt-BR')),
@@ -54,7 +48,7 @@ export function LibraryPage() {
           </h1>
           <p className="mt-3 max-w-xl text-sm leading-relaxed text-ink-soft">
             {allowed.length === 0
-              ? 'Nenhum jogo liberado para esta chave no momento.'
+              ? 'Nenhum jogo publicado no momento.'
               : 'Todos rodam direto no navegador, no computador ou no celular. Sem instalar nada — é só escolher e jogar.'}
           </p>
         </div>
@@ -139,7 +133,7 @@ function EmptyState({ filtering, onClear }: { filtering: boolean; onClear: () =>
       <p className="mt-2 max-w-sm text-sm text-ink-soft">
         {filtering
           ? 'Nenhum jogo corresponde a esses filtros.'
-          : 'Esta chave de acesso ainda não tem nenhum jogo liberado.'}
+          : 'Nenhum jogo publicado por aqui ainda.'}
       </p>
       {filtering && (
         <button
