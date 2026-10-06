@@ -4,7 +4,6 @@ import { visibleGames } from '../data/games'
 import { GameCard } from '../components/GameCard'
 import { Header } from '../components/layout/Header'
 import { Footer } from '../components/layout/Footer'
-import { site } from '../config/site'
 
 export function LibraryPage() {
   const [query, setQuery] = useState('')
@@ -35,15 +34,12 @@ export function LibraryPage() {
 
   return (
     <div className="flex min-h-dvh flex-col">
-      <Header />
+      <Header variant="hero" />
 
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-10 sm:px-6 sm:py-14">
         {/* Cabeçalho da página */}
         <div className="animate-rise">
-          <p className="font-pixel text-[10px] tracking-[0.18em] text-ink-dim uppercase">
-            {site.name}
-          </p>
-          <h1 className="mt-3 font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl">
+          <h1 className="font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl">
             Nossos jogos
           </h1>
           <p className="mt-3 max-w-xl text-sm leading-relaxed text-ink-soft">
